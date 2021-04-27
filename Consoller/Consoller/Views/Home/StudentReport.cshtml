@@ -1,0 +1,108 @@
+﻿
+@using Consoller.Areas.Auth.Models
+@using System.Data
+@model DataTable
+@{
+    ViewBag.Title = "StudentReport";
+    Layout = "~/Views/Shared/main.cshtml";
+    DataTable dt = new DataTable();
+    dbcontext db = new dbcontext();
+    tblstudentdata stu = new tblstudentdata();
+    var a = dt.Rows.Count;
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-inline">
+                        <label class="sr-only" for="inlineFormInputName2">Date</label>
+                        @Html.EditorFor(model => stu.To, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => stu.From, new { htmlAttributes = new { @class = "form-control" } })
+
+
+
+
+
+
+                    </div>
+
+                    <div class="input-group mb-2 mr-sm-4">
+                        <input type="submit" class="btn btn-primary mb-2" name="Search" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@if (Model != null)
+{
+    <div class="card">
+        <div class="card-body">
+            <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <tr>
+                    <th>RollNo</th>
+                    <th>
+                        Admission  Date
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Father Name
+                    </th>
+                    <th>
+                        Mobile
+                    </th>
+                    <th>
+                        Course
+                    </th>
+
+
+                </tr>
+
+                @foreach (DataRow item in Model.Rows)
+                {
+                    <tr>
+                        <td>
+                            @{
+                                int rollno = Convert.ToInt32(item["Rollno"]);
+                            }
+                            @rollno
+                        </td>
+                        <td>
+
+                            @item["Date"].ToString()
+                        </td>
+                        <td>
+
+                            @item["Name"].ToString()
+                        </td>
+                        <td>
+
+                            @item["FatherName"].ToString()
+                        </td>
+                        <td>
+
+                            @item["phone"].ToString()
+                        </td>
+                        <td>
+
+                            @{
+                                StudentCourse sc = db.StudentCourses.FirstOrDefault(x => x.RollNo == rollno);
+                                Course cc = db.Courses.FirstOrDefault(x => x.CourseId == sc.CourseId);
+                            }
+                            @cc.CourseName
+                        </td>
+
+
+                    </tr>
+                                }
+
+            </table>
+        </div>
+    </div>
+                                }
+

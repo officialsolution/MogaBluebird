@@ -1,0 +1,207 @@
+﻿@using Consoller.Areas.Auth.Models
+@using Consoller.Models
+@model DataTable
+@using System.Data
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/main.cshtml";
+    dbcontext db = new dbcontext();
+    tblstudentdata student = new tblstudentdata();
+    ViewBag.Mid = new SelectList(db.tblreceptionists.Where(x => x.Type == "Teacher" && x.status == true).ToList(), "id", "name");
+    DataTable dd = new DataTable();
+    int last = 0;
+    Helper help = new Helper();
+    DashModel dash = new DashModel();
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="invoice-title">
+                    <h4 class="float-right font-size-16">Date @System.DateTime.Now.ToString("dd/MM/yyyy")</h4>
+                    <div class="mb-4">
+                        <img src="~/Uploadfile/@help.CompanyName().logo" alt="logo" height="20">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <address>
+                            <strong>@help.CompanyName().name Immigration</strong><br>
+                            @dash.details.address
+                            Daily Report<br>
+                            By: @help.RoleName()<br>
+                            @dash.date.AddHours(4).AddMinutes(30)
+
+                        </address>
+                    </div>
+                    <div class="col-sm-8 text-sm-right">
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="card mini-stats-wid">
+                                    <div class="card-body">
+                                        <div class="media-body">
+                                            <h5>IELTS Income</h5>
+                                            @*<p class="text-muted font-weight-medium">Today : <span>@dash.TodayIelts()</span></p>*@
+                                            @*<p class="text-muted font-weight-medium">Yesterday : <span>@Model.yesterdayIelts()</span></p>
+                                                <p class="text-muted font-weight-medium">This Month : <span>@Model.ThisMonthIelts()</span></p>
+                                                <p class="text-muted font-weight-medium">Last Month : <span>@Model.LastMonthIelts()</span></p>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Demo & Regular </h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>
+                            RollNo
+                        </th>
+                        <th>
+                            Name
+                        </th>
+
+                        <th>
+                            Course
+                        </th>
+
+                        <th>
+                            Joining Date
+                        </th>
+
+                        <th>
+                            End Date
+                        </th>
+                        <th>Status</th>
+
+
+                    </tr>
+                </thead>
+
+                @foreach (DataRow item in Model.Rows)
+                {
+                    int rollno = Convert.ToInt32(item["rollno"]);
+                    Recipt_Details rd = db.Recipt_Details.FirstOrDefault(x => x.RollNo == rollno && x.CourseId == 1001);
+                    if (rd != null)
+                    {
+                        <tr>
+
+                            <td>
+                                @{ DateTime date = Convert.ToDateTime(item["date"]);
+                                }
+                                @date.ToString("dd/MM/yyyy");
+                            </td>
+                            <td>
+
+                                @rollno
+                            </td>
+                            <td>
+                                @{
+                                    string franch = item["franchid"].ToString();
+                                    tblstudentdata stu = db.tblstudentdata.FirstOrDefault(x => x.rollno == rollno && x.uid == franch);
+                                }
+                                @stu.name
+                            </td>
+
+                            <td>
+                                @{
+                                    int courseid = Convert.ToInt32(item["CourseId"]);
+                                    Course course = db.Courses.FirstOrDefault(x => x.CourseId == rd.CourseId && x.franchid == stu.uid);
+                                }
+                                @course.CourseName
+                            </td>
+
+
+                            <td>
+                                @{
+                                    StudentCourse sc = db.StudentCourses.FirstOrDefault(x => x.RollNo == rollno && x.Uid == franch);
+                                }
+                                @Convert.ToDateTime(sc.Admitdate).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @{
+                                    StudentCourse sc1 = db.StudentCourses.FirstOrDefault(x => x.RollNo == rollno && x.Uid == franch);
+                                }
+                                @Convert.ToDateTime(sc1.enddate).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                <span class="text-success">Regular</span>
+                            </td>
+
+                        </tr>
+                                    }
+                                    else
+                                    {
+                        <tr>
+
+                            <td>
+                               @{ DateTime date = Convert.ToDateTime(item["date"]);
+                               }
+                                @date.ToString("dd/MM/yyyy");
+
+                            </td>
+                            <td>
+
+                                @rollno
+                            </td>
+                            <td>
+                                @{
+                                    string franch = item["franchid"].ToString();
+                                    tblstudentdata stu = db.tblstudentdata.FirstOrDefault(x => x.rollno == rollno && x.uid == franch);
+                                }
+                                @stu.name
+                            </td>
+
+                            <td>
+                                @{
+                                    int courseid = Convert.ToInt32(item["CourseId"]);
+                                    Course course = db.Courses.FirstOrDefault(x => x.CourseId == courseid && x.franchid == stu.uid);
+                                }
+                                @course.CourseName
+                            </td>
+
+
+                            <td></td>
+                            <td>
+                            <td>
+                                <span class="text-danger">Not Continuous</span>
+                            </td>
+
+
+                        </tr>
+                    }
+
+                }
+
+
+
+
+            </table>
+        </div>
+
+    </div>
+</div>
+<div class="d-print-none">
+    <div class="float-right">
+        <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light mr-1"><i class="fa fa-print"></i> Print </a>
+
+    </div>
+</div>
