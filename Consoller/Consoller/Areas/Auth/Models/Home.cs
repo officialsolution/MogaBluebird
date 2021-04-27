@@ -965,6 +965,7 @@ namespace Consoller.Areas.Auth.Models
     }
     public enum source
     {
+        [Display(Name = "Social Media")]
         SocialMedia, Newspaper, Others
     }
     public enum ConsollerStatus
