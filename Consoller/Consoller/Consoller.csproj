@@ -211,6 +211,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminReportController.cs" />
     <Compile Include="Areas\Admin\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PendingController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentController.cs" />
     <Compile Include="Areas\Admin\Models\AdminData.cs" />
     <Compile Include="Areas\Auth\AuthAreaRegistration.cs" />
@@ -835,6 +836,9 @@
     <Content Include="Areas\Admin\Views\Student\Logs.cshtml" />
     <Content Include="Areas\Auth\Views\DailyReports\Userreport.cshtml" />
     <Content Include="Areas\Admin\Views\Default\ExpenseReport.cshtml" />
+    <Content Include="Areas\Admin\Views\Pending\GicPending.cshtml" />
+    <Content Include="Areas\Admin\Views\Pending\OfferPending.cshtml" />
+    <Content Include="Areas\Admin\Views\Pending\MedicalPending.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Alert.js" />
     <Content Include="Scripts\bootstrap.js" />

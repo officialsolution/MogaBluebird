@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     @RenderSection("scripts", required: false)
 </head>
-<body data-sidebar="dark" data-keep-enlarged="true" class="vertical-collpsed">
+<body data-sidebar="dark" data-keep-enlarged="true" class="sidebar-enable">
     <!-- Begin page -->
     <div id="layout-wrapper">
         <header id="page-topbar">
@@ -477,8 +477,8 @@
     <!-- Right bar overlay-->
     <div class="rightbar-overlay"></div>
     <!-- JAVASCRIPT -->
-    <script src="~/assets/libs/jquery/jquery.min.js"></script>
-
+    @*<script src="~/assets/libs/jquery/jquery.min.js"></script>*@
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
     @*<script src="~/assets/libs/simplebar/simplebar.min.js"></script>*@

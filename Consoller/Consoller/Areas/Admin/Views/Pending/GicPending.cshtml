@@ -1,13 +1,13 @@
-﻿@model  IEnumerable<Consoller.Areas.Auth.Models.Application>
+﻿@model  IEnumerable<Consoller.Areas.Auth.Models.Process>
 @using Consoller.Areas.Auth.Models
 @{
-    ViewBag.Title = "AllApplication";
+    ViewBag.Title = "GicPending";
     Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
     dbcontext db = new dbcontext();
     var a = 0;
 }
 
-<h2>AllApplication</h2>
+<h2>Pending Gic</h2>
 <div class="row">
     <div class="col-lg-12">
         <div class="">
@@ -28,7 +28,8 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            online on = db.onlines.FirstOrDefault(x => x.inquiryid == item.InquiryId);
+                            Application app = db.Applications.FirstOrDefault(x => x.ApplicationNo == item.ApplicationNo);
+                            online on = db.onlines.FirstOrDefault(x => x.inquiryid == app.InquiryId);
                             <tr>
                                 <td>
                                     @{
@@ -43,14 +44,14 @@
                                 </td>
                                 <td>@on.City</td>
                                 <td>
-                                    @if (item.Month != 0)
+                                    @if (app.Month != 0)
                                     {
-                                        @db.Months.Find(item.Month).Name <span>-</span>
-                                        @db.Years.Find(item.Year).Name
+                                        @db.Months.Find(app.Month).Name <span>-</span>
+                                        @db.Years.Find(app.Year).Name
                                     }
 
                                 </td>
-                                <td><span class="badge badge-primary">@item.Status</span></td>
+                                <td><span class="badge badge-primary">@app.Status</span></td>
                                 <td>
                                     @{
                                         Process pp = db.Process.FirstOrDefault(x => x.ApplicationNo == item.ApplicationNo);
@@ -125,7 +126,7 @@
 
                                 </td>
                                 <td>
-                                    <h5 class="text-truncate font-size-14"><a href="#" class="text-dark">@db.tblreceptionists.FirstOrDefault(x => x.rid == item.DealBy).name</a></h5>
+                                    <h5 class="text-truncate font-size-14"><a href="#" class="text-dark">@db.tblreceptionists.FirstOrDefault(x => x.rid == app.DealBy).name</a></h5>
 
                                 </td>
                                 <td>
@@ -153,10 +154,10 @@
 <script>
     $(document).ready(function () {
         debugger;
-  $.fn.dataTable.moment('DD/MM/YY');
-  
+        $.fn.dataTable.moment('DD/MM/YY');
+
         $('.nowrap').DataTable({
-    "order": [[ 0, "desc" ]] 
-  });
-});
+            "order": [[0, "desc"]]
+        });
+    });
 </script>

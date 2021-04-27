@@ -36,6 +36,34 @@ namespace Consoller.Areas.Admin.Models
                 return db.Applications.Count();
             }
         }
+        public int GicPending
+        {
+            get
+            {
+                return db.Process.Where(x=>x.Gic==false).Count();
+            }
+        }
+        public int MedicalPending
+        {
+            get
+            {
+                return db.Process.Where(x => x.Medical == false).Count();
+            }
+        }
+        public int OfferPending
+        {
+            get
+            {
+                return db.Process.Where(x => x.Offerletter == false).Count();
+            }
+        }
+        public int SubmitPending
+        {
+            get
+            {
+                return db.Process.Where(x => x.SubmitFile == false).Count();
+            }
+        }
         public List<online> online
         {
             get
