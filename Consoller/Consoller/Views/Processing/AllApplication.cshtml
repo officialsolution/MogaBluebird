@@ -14,7 +14,7 @@
     <div class="card-body">
         <h4>Confirm applications</h4>
         <hr />
-        <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+        <table id="example" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
             <thead>
                 <tr>
                     <th>
@@ -40,7 +40,9 @@
                     <th>
                         Status
                     </th>
-
+                    <th>
+                        Gic Status
+                    </th>
                     <th>
                         Application
                     </th>
@@ -52,6 +54,7 @@
                 online on = db.onlines.FirstOrDefault(x => x.inquiryid == item.InquiryId && x.franchid == item.Franchid);
                 <tr>
                     <td>
+                        @Html.HiddenFor(x => item.Aid)
                         @{
 
                             i = i + 1;
@@ -78,7 +81,18 @@
                         @on.City
                     </td>
                     <td>
-                        <span class="badge badge-pill badge-soft-danger font-size-12">@item.Status</span>
+                        <span class="badge badge-pill badge-soft-success font-size-12">@item.Status</span>
+                    </td>
+                    <td>
+                        @{ GIC gic = db.Gic.FirstOrDefault(x => x.ApplicationNo == item.ApplicationNo);}
+                        @if (gic ==null)
+                        {
+                            <span class="badge badge-pill badge-soft-danger font-size-11">Pending</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-pill badge-soft-success font-size-11">Open</span>
+                        }
                     </td>
                     <td>
                         @Html.ActionLink("DashBoard", "Create", "Application", new { id = item.InquiryId }, new { @class = "btn btn-primary btn-sm" })
@@ -92,10 +106,21 @@
                         <a href="@Url.Action("Profile","Application",new { id=item.ApplicationNo})" class="btn btn-danger btn-sm">Full Detail</a>
                     </td>
                 </tr>
-                            }
+            }
 
         </table>
 
     </div>
 </div>
 
+
+@section scriptjs{
+    <script src="//cdn.datatables.net/plug-ins/1.10.11/sorting/date-eu.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "order": [[0, "desc"]]
+            });
+        });
+    </script>
+}

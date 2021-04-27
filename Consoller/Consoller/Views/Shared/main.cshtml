@@ -75,7 +75,7 @@
                         @using (Html.BeginForm("Search", "Application"))
                         {
                             <div class="position-relative">
-                                @Html.EditorFor(model => app.TrackingId, new { htmlAttributes = new { @class = "form-control",placeholder="Search Tracking Id" } })
+                                @Html.EditorFor(model => app.TrackingId, new { htmlAttributes = new { @class = "form-control", placeholder = "Search Tracking Id" } })
                                 <span class="bx bx-search-alt"></span>
                             </div>
                             <div class="position-relative" style="display:none">
@@ -324,7 +324,7 @@
                         </div>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
                              aria-labelledby="page-header-notifications-dropdown">
-                            
+
                             <div class="p-3">
                                 <div class="row align-items-center">
                                     <div class="col">
@@ -403,23 +403,23 @@
                         </div>
                     </div>
                     @*<span class="noti glyphicon glyphicon-bell"><span class="count">&nbsp;</span></span>*@
-                   
+
                     <div class="dropdown d-inline-block">
-@if (User.Identity.IsAuthenticated)
-{
-    <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img class="rounded-circle header-profile-user" src="~/assets/images/users/avatar-1.jpg"
-             alt="Header Avatar">
-        <span class="d-none d-xl-inline-block ml-1">@help.RoleName()</span>
-        <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-    </button>
-}
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="~/assets/images/users/avatar-1.jpg"
+                                     alt="Header Avatar">
+                                <span class="d-none d-xl-inline-block ml-1">@help.RoleName()</span>
+                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                            </button>
+                        }
                         <div class="dropdown-menu dropdown-menu-right">
                             <!-- item-->
-                            
-                            
-                            
+
+
+
                             <a class="dropdown-item text-danger" href="@Url.Action("SignOut","Credential")"><i class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></i> Logout</a>
                         </div>
                     </div>
@@ -533,7 +533,7 @@
                 <div class="container-fluid">
 
                     <!-- start page title -->
-                   @RenderBody()
+                    @RenderBody()
                 </div> <!-- container-fluid -->
             </div>
             <!-- End Page-content -->
@@ -688,12 +688,12 @@
     }
     @if (success != null)
     {
-    <div class="container" style="position:fixed;left: 0px;top: 0px;right: 0px;">
-        <div class="alert alert-success" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Success!</strong> @success
+        <div class="container" style="position:fixed;left: 0px;top: 0px;right: 0px;">
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Success!</strong> @success
+            </div>
         </div>
-    </div>
     }
     @if (danger != null)
     {
@@ -709,8 +709,8 @@
     <!-- Right bar overlay-->
     <div class="rightbar-overlay"></div>
     <!-- JAVASCRIPT -->
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    @*<script src="~/assets/libs/jquery/jquery.min.js"></script>*@
+    @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
     <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
@@ -730,10 +730,10 @@
     <script src="~/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
     <script src="~/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
     <!-- Datatable init js -->
-    <script src="~/assets/js/pages/datatables.init.js"></script>    
+    <script src="~/assets/js/pages/datatables.init.js"></script>
     <!-- apexcharts -->
     @*<script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
-    <script src="~/assets/js/pages/dashboard.init.js"></script>*@
+        <script src="~/assets/js/pages/dashboard.init.js"></script>*@
     <script src="~/assets/js/app.js"></script>
     <script src="~/Scripts/sweetalert.min.js"></script>
 
@@ -741,85 +741,85 @@
     <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css"
           rel="Stylesheet" type="text/css" />
     <script type="text/javascript">
-    $(function () {
+        $(function () {
 
-        $("#course").autocomplete({
+            $("#course").autocomplete({
 
-            source: function (request, response) {
-                $.ajax({
+                source: function (request, response) {
+                    $.ajax({
 
-                    url: '/SearchProgram/SearchCourse/',
-                    data: "{ 'prefix': '" + request.term + "'}",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return item;
-                        }))
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-            },
-            select: function (e, i) {
-                $("#hfCustomer").val(i.item.label);
-            },
-            minLength: 1
+                        url: '/SearchProgram/SearchCourse/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#hfCustomer").val(i.item.label);
+                },
+                minLength: 1
+            });
         });
-    });
-     $(function () {
+        $(function () {
 
-        $("#country").autocomplete({
+            $("#country").autocomplete({
 
-            source: function (request, response) {
-                $.ajax({
+                source: function (request, response) {
+                    $.ajax({
 
-                    url: '/SearchProgram/SearchCountry/',
-                    data: "{ 'prefix': '" + request.term + "'}",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return item;
-                        }))
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-            },
-            select: function (e, i) {
-                $("#hfCountry").val(i.item.val);
-            },
-            minLength: 1
+                        url: '/SearchProgram/SearchCountry/',
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    $("#hfCountry").val(i.item.val);
+                },
+                minLength: 1
+            });
         });
-    });
     </script>
 
     @*<script>
-        $(function () {
-            debugger;
-            var message = '@TempData["Success"]'
-            var danger = '@TempData["danger"]'
-            if (message != '') {
-                swal("Good job!", "@TempData["Success"]", "success");
+            $(function () {
+                debugger;
+                var message = '@TempData["Success"]'
+                var danger = '@TempData["danger"]'
+                if (message != '') {
+                    swal("Good job!", "@TempData["Success"]", "success");
 
-            }
-            if (danger != '') {
-                
-                swal("Sorry!", "@TempData["danger"]", "error");
-            }
-        })
-    </script>*@
+                }
+                if (danger != '') {
+
+                    swal("Sorry!", "@TempData["danger"]", "error");
+                }
+            })
+        </script>*@
     <script>
         var message;
          danger = '@TempData["danger"]'
@@ -840,35 +840,36 @@
                 });
             }, 4000);
         }
-        
+
     </script>
 
 
     <script src="~/assets/tinymce/tinymce.min.js"></script>
     <script>
-tinymce.init({
-    selector: 'textarea',
-    height: 300,
+        tinymce.init({
+            selector: 'textarea',
+            height: 300,
 
-    theme: 'modern',
-    plugins: [
-      'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-      'searchreplace wordcount visualblocks visualchars code fullscreen',
-      'insertdatetime media nonbreaking save table contextmenu directionality',
-      'emoticons template paste textcolor colorpicker textpattern imagetools codesample'
-    ],
-    toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-    toolbar2: 'print preview media | forecolor backcolor emoticons | codesample',
-    image_advtab: true,
-    templates: [
-      { title: 'Test template 1', content: 'Test 1' },
-      { title: 'Test template 2', content: 'Test 2' }
-    ],
-    content_css: [
-      '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-      '//www.tinymce.com/css/codepen.min.css'
-    ]
-});</script>
+            theme: 'modern',
+            plugins: [
+                'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                'searchreplace wordcount visualblocks visualchars code fullscreen',
+                'insertdatetime media nonbreaking save table contextmenu directionality',
+                'emoticons template paste textcolor colorpicker textpattern imagetools codesample'
+            ],
+            toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            toolbar2: 'print preview media | forecolor backcolor emoticons | codesample',
+            image_advtab: true,
+            templates: [
+                { title: 'Test template 1', content: 'Test 1' },
+                { title: 'Test template 2', content: 'Test 2' }
+            ],
+            content_css: [
+                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                '//www.tinymce.com/css/codepen.min.css'
+            ]
+        });</script>
+    @RenderSection("scriptjs", false)
 </body>
 <!-- Mirrored from themesbrand.com/skote-mvc/vertical/layouts-icon-sidebar.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2020 17:15:42 GMT -->
 </html>
