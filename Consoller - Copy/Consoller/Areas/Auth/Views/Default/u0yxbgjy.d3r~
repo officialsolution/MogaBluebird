@@ -1,0 +1,772 @@
+﻿@model MvcFeeManage.Areas.Auth.Models.DashModel
+@using MvcFeeManage.Areas.Auth.Models;
+@using onlineportal.Areas.AdminPanel.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Auth/Views/Shared/Layout.cshtml";
+    dbcontext db = new dbcontext();
+    Helper help = new Helper();
+    var ab = System.DateTime.Now.AddDays(3);
+    DateTime date = System.DateTime.Now;
+    DateTime c = Convert.ToDateTime(ab);
+    string a = "";
+    if (User.IsInRole("Franchisee"))
+    {
+        a = help.Franchisee();
+    }
+    else
+    {
+        a = help.Receptionist();
+    }
+    tblreceptionist rr = db.tblreceptionists.Where(x => x.rid == a).First();
+    var totalcourse = db.StudentCourses.Where(x => x.Status == true && x.enddate <= c && x.Status == true && x.Uid==a).Count();
+    var student = db.tblstudentdata.Where(x => x.Status == true && x.uid == rr.franchid.ToString()).Count();
+    var feealert= db.Fees_Master.Where(x => x.AlertDate <= date && x.franchid == rr.franchid.ToString()).Count();
+    IEnumerable<tblinquiry> dd = db.tblinquiries.Where(x=>x.franchid==a).Take(5).ToList();
+    IEnumerable<tblfeedback> feed = db.tblfeedback.Where(x => x.loginid == a && x.nextfollow <= date && x.status== true).ToList();
+
+}
+
+<h2>DashBoard</h2>
+
+<div class="container-widget">
+
+    <!-- Start Top Stats -->
+    <div class="col-md-12">
+        <ul class="topstats clearfix">
+            <li class="arrow"></li>
+            <li class="col-xs-3 col-lg-3">
+                <a href="@Url.Action("StudentDatas", "Index")">
+                    <span class="title"><i class="fa fa-dot-circle-o"></i> Total Student</span>
+                    <h3>@student</h3>
+                    <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> </b></span>
+                    </a>
+</li>
+            <li class="col-xs-3 col-lg-3">
+                <a href="@Url.Action("CourseFinishAlert", "Default")">
+                    <span class="title"><i class="fa fa-calendar-o"></i> Course Finish</span>
+                    <h3>@totalcourse</h3>
+                    <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i></b></span>
+                </a>
+</li>
+            <li class="col-xs-3 col-lg-3">
+                <a href="@Url.Action("Index", "Logs")">
+                    <span class="title"><i class="fa fa-shopping-cart"></i> Fee Alert</span>
+                    <h3 class="color-up">@feealert</h3>
+                    <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> %</b> </span>
+                    </a>
+</li>
+            <li class="col-xs-3 col-lg-3">
+                <span class="title"><i class="fa fa-users"></i> Visitors</span>
+                <h3>960</h3>
+                <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> 26%</b> from yesterday</span>
+            </li>
+           
+        </ul>
+    </div>
+    <!-- End Top Stats -->
+    <!-- Start First Row -->
+    <div class="row">
+
+        <!-- Start Chart Daily -->
+        <div class="col-md-12 col-lg-7">
+            <div class=" panel-widget widget chart-with-stats clearfix" style="height:450px;">
+
+                <div class="col-sm-12" style="height:450px;">
+                    <h4 class="title">TODAY SALES<small>Last update: 1 Hours ago</small></h4>
+                    <div class="top-label"><h2>11.291</h2><h4>Today Total</h4></div>
+                    <div class="bigchart rickshaw_graph" id="todaysales"><svg width="607" height="300"><rect x="0" y="205.60438357645398" width="5.242272727272726" height="94.395616423546" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="5.518181818181818" y="200.1328362024083" width="5.242272727272726" height="99.8671637975917" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="11.036363636363635" y="211.955411443694" width="5.242272727272726" height="88.044588556306" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="16.554545454545455" y="201.02568166643334" width="5.242272727272726" height="98.97431833356666" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="22.07272727272727" y="197.35444196483766" width="5.242272727272726" height="102.64555803516234" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="27.59090909090909" y="197.64739269910518" width="5.242272727272726" height="102.3526073008948" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="33.10909090909091" y="212.75537222198994" width="5.242272727272726" height="87.24462777801006" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="38.627272727272725" y="211.4324081150047" width="5.242272727272726" height="88.56759188499528" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="44.14545454545454" y="212.14997062985748" width="5.242272727272726" height="87.85002937014252" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="49.663636363636364" y="199.05538224035303" width="5.242272727272726" height="100.94461775964696" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="55.18181818181818" y="201.73505439829813" width="5.242272727272726" height="98.26494560170185" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="60.7" y="202.1383906196877" width="5.242272727272726" height="97.86160938031232" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="66.21818181818182" y="218.0963335894818" width="5.242272727272726" height="81.9036664105182" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="71.73636363636363" y="220.05995556080984" width="5.242272727272726" height="79.94004443919016" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="77.25454545454545" y="206.81595655204399" width="5.242272727272726" height="93.18404344795603" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="82.77272727272727" y="216.44214673145177" width="5.242272727272726" height="83.55785326854821" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="88.29090909090908" y="206.6033226909951" width="5.242272727272726" height="93.3966773090049" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="93.80909090909091" y="216.92391223759105" width="5.242272727272726" height="83.07608776240895" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="99.32727272727273" y="218.34514683914864" width="5.242272727272726" height="81.65485316085136" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="104.84545454545454" y="223.12614871322478" width="5.242272727272726" height="76.87385128677522" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="110.36363636363636" y="222.31543447482454" width="5.242272727272726" height="77.68456552517546" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="115.88181818181819" y="210.75724634096514" width="5.242272727272726" height="89.24275365903485" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="121.4" y="224.61005767268904" width="5.242272727272726" height="75.38994232731098" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="126.91818181818181" y="220.30893561609471" width="5.242272727272726" height="79.69106438390529" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="132.43636363636364" y="219.52827065527896" width="5.242272727272726" height="80.47172934472104" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="137.95454545454544" y="216.12497873369756" width="5.242272727272726" height="83.87502126630245" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="143.47272727272727" y="219.1912191178058" width="5.242272727272726" height="80.80878088219421" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="148.9909090909091" y="220.98356231234135" width="5.242272727272726" height="79.01643768765864" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="154.5090909090909" y="218.78160178375632" width="5.242272727272726" height="81.21839821624368" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="160.0272727272727" y="204.78253955306417" width="5.242272727272726" height="95.21746044693583" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="165.54545454545453" y="207.55913392039895" width="5.242272727272726" height="92.44086607960105" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="171.06363636363636" y="213.50203147141931" width="5.242272727272726" height="86.49796852858069" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="176.58181818181816" y="210.49541173878745" width="5.242272727272726" height="89.50458826121255" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="182.1" y="216.3839564433634" width="5.242272727272726" height="83.6160435566366" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="187.61818181818182" y="215.37886814676537" width="5.242272727272726" height="84.62113185323463" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="193.13636363636363" y="220.9273005520946" width="5.242272727272726" height="79.07269944790538" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="198.65454545454546" y="206.95816647690864" width="5.242272727272726" height="93.04183352309136" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="204.1727272727273" y="206.20124470340247" width="5.242272727272726" height="93.79875529659753" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="209.6909090909091" y="205.04975918935457" width="5.242272727272726" height="94.95024081064541" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="215.20909090909092" y="200.05682517760016" width="5.242272727272726" height="99.94317482239983" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="220.72727272727272" y="216.36496780556155" width="5.242272727272726" height="83.63503219443847" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="226.24545454545455" y="206.01652006903612" width="5.242272727272726" height="93.98347993096388" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="231.76363636363638" y="206.21646630726696" width="5.242272727272726" height="93.78353369273304" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="237.28181818181818" y="210.45995491865494" width="5.242272727272726" height="89.54004508134506" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="242.8" y="204.93113127973527" width="5.242272727272726" height="95.06886872026472" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="248.31818181818184" y="213.1590879301953" width="5.242272727272726" height="86.84091206980467" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="253.83636363636361" y="217.19114693785144" width="5.242272727272726" height="82.80885306214854" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="259.3545454545454" y="207.55147138149425" width="5.242272727272726" height="92.44852861850575" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="264.8727272727273" y="213.406221252232" width="5.242272727272726" height="86.59377874776798" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="270.3909090909091" y="211.3013069159399" width="5.242272727272726" height="88.69869308406008" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="275.9090909090909" y="216.93764518720187" width="5.242272727272726" height="83.06235481279813" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="281.42727272727274" y="222.75087833844236" width="5.242272727272726" height="77.24912166155765" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="286.94545454545454" y="227.92029999158166" width="5.242272727272726" height="72.07970000841836" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="292.46363636363634" y="209.00133197894206" width="5.242272727272726" height="90.99866802105794" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="297.9818181818182" y="224.93702538890082" width="5.242272727272726" height="75.06297461109918" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="303.5" y="219.5514000884482" width="5.242272727272726" height="80.44859991155182" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="309.0181818181818" y="219.5359344012008" width="5.242272727272726" height="80.46406559879922" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="314.53636363636366" y="229.79524418771183" width="5.242272727272726" height="70.20475581228817" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="320.0545454545454" y="228.87819589809294" width="5.242272727272726" height="71.12180410190707" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="325.57272727272726" y="215.67496762410556" width="5.242272727272726" height="84.32503237589444" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="331.09090909090907" y="219.9725951394716" width="5.242272727272726" height="80.0274048605284" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="336.6090909090909" y="219.1492697232041" width="5.242272727272726" height="80.8507302767959" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="342.1272727272727" y="219.04589032322187" width="5.242272727272726" height="80.95410967677813" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="347.6454545454546" y="235.788495532013" width="5.242272727272726" height="64.211504467987" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="353.16363636363633" y="228.10935739330682" width="5.242272727272726" height="71.89064260669318" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="358.6818181818182" y="230.62760553077575" width="5.242272727272726" height="69.37239446922425" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="364.2" y="237.4974317913144" width="5.242272727272726" height="62.50256820868561" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="369.71818181818185" y="243.63428038265351" width="5.242272727272726" height="56.365719617346485" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="375.23636363636365" y="234.98166508197374" width="5.242272727272726" height="65.01833491802626" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="380.7545454545455" y="237.9526024762431" width="5.242272727272726" height="62.047397523756885" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="386.27272727272725" y="219.6538364765528" width="5.242272727272726" height="80.34616352344719" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="391.7909090909091" y="226.443777271258" width="5.242272727272726" height="73.55622272874199" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="397.3090909090909" y="239.22487732936082" width="5.242272727272726" height="60.77512267063916" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="402.82727272727277" y="223.2980020444797" width="5.242272727272726" height="76.70199795552033" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="408.3454545454546" y="231.00507513049382" width="5.242272727272726" height="68.99492486950616" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="413.8636363636363" y="230.07567657441044" width="5.242272727272726" height="69.92432342558956" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="419.3818181818182" y="227.5384010040222" width="5.242272727272726" height="72.46159899597781" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="424.9" y="233.83147232745927" width="5.242272727272726" height="66.16852767254072" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="430.41818181818184" y="230.98683545478917" width="5.242272727272726" height="69.01316454521081" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="435.93636363636364" y="223.0680878885102" width="5.242272727272726" height="76.93191211148978" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="441.45454545454544" y="227.3295918424497" width="5.242272727272726" height="72.67040815755031" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="446.97272727272724" y="224.6586040496507" width="5.242272727272726" height="75.3413959503493" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="452.4909090909091" y="223.34162014368124" width="5.242272727272726" height="76.65837985631876" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="458.0090909090909" y="225.75674173231494" width="5.242272727272726" height="74.24325826768508" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="463.52727272727276" y="220.65254172612194" width="5.242272727272726" height="79.34745827387806" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="469.04545454545456" y="224.80727607520848" width="5.242272727272726" height="75.19272392479152" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="474.56363636363636" y="224.3383827812156" width="5.242272727272726" height="75.6616172187844" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="480.08181818181816" y="219.7056682226978" width="5.242272727272726" height="80.29433177730219" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="485.6" y="218.18248536266344" width="5.242272727272726" height="81.81751463733654" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="491.1181818181818" y="213.13172890298154" width="5.242272727272726" height="86.86827109701845" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="496.6363636363637" y="219.22662585061516" width="5.242272727272726" height="80.77337414938482" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="502.1545454545454" y="221.0022500858998" width="5.242272727272726" height="78.99774991410023" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="507.67272727272723" y="215.0190256649413" width="5.242272727272726" height="84.9809743350587" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="513.1909090909091" y="219.29347638313732" width="5.242272727272726" height="80.70652361686268" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="518.7090909090908" y="231.42290328550206" width="5.242272727272726" height="68.57709671449793" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="524.2272727272727" y="225.86666010798717" width="5.242272727272726" height="74.13333989201283" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="529.7454545454545" y="231.81440572709224" width="5.242272727272726" height="68.18559427290776" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="535.2636363636364" y="227.3153149573114" width="5.242272727272726" height="72.68468504268863" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="540.7818181818182" y="232.80766123786077" width="5.242272727272726" height="67.19233876213923" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="546.3000000000001" y="227.49079195426725" width="5.242272727272726" height="72.50920804573275" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="551.8181818181818" y="232.40459660867114" width="5.242272727272726" height="67.59540339132886" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="557.3363636363637" y="231.54089595650836" width="5.242272727272726" height="68.45910404349164" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="562.8545454545455" y="246.48851987688656" width="5.242272727272726" height="53.51148012311344" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="568.3727272727273" y="247.28555704525968" width="5.242272727272726" height="52.71444295474031" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="573.8909090909091" y="240.07096527757335" width="5.242272727272726" height="59.92903472242666" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="579.4090909090909" y="242.17841602290025" width="5.242272727272726" height="57.82158397709974" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="584.9272727272727" y="233.66749401586134" width="5.242272727272726" height="66.33250598413868" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="590.4454545454546" y="235.35596873650655" width="5.242272727272726" height="64.64403126349343" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="595.9636363636364" y="251.720958026281" width="5.242272727272726" height="48.27904197371898" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="601.4818181818182" y="243.86107559577124" width="5.242272727272726" height="56.13892440422875" transform="matrix(1,0,0,1,0,0)" fill="#33577B"></rect><rect x="0" y="112.83448125831782" width="5.242272727272726" height="92.76990231813619" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="5.518181818181818" y="109.54352748129821" width="5.242272727272726" height="90.58930872111009" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="11.036363636363635" y="122.80442514385348" width="5.242272727272726" height="89.15098629984053" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="16.554545454545455" y="107.04629978884836" width="5.242272727272726" height="93.97938187758497" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="22.07272727272727" y="110.94881622484155" width="5.242272727272726" height="86.40562573999613" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="27.59090909090909" y="97.82586974362505" width="5.242272727272726" height="99.82152295548018" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="33.10909090909091" y="119.79385535765505" width="5.242272727272726" height="92.96151686433491" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="38.627272727272725" y="109.28154404912542" width="5.242272727272726" height="102.15086406587933" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="44.14545454545454" y="112.52622895370817" width="5.242272727272726" height="99.62374167614935" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="49.663636363636364" y="113.88186688696163" width="5.242272727272726" height="85.1735153533914" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="55.18181818181818" y="114.62241504550767" width="5.242272727272726" height="87.1126393527905" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="60.7" y="113.54459907573286" width="5.242272727272726" height="88.59379154395478" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="66.21818181818182" y="121.51778645371061" width="5.242272727272726" height="96.5785471357712" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="71.73636363636363" y="138.77391168151058" width="5.242272727272726" height="81.28604387929924" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="77.25454545454545" y="119.06626862030734" width="5.242272727272726" height="87.74968793173664" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="82.77272727272727" y="129.1803130206931" width="5.242272727272726" height="87.26183371075868" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="88.29090909090908" y="120.2096428404191" width="5.242272727272726" height="86.39367985057598" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="93.80909090909091" y="128.8233306140139" width="5.242272727272726" height="88.10058162357714" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="99.32727272727273" y="130.93663453142307" width="5.242272727272726" height="87.40851230772557" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="104.84545454545454" y="130.30979638101766" width="5.242272727272726" height="92.81635233220709" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="110.36363636363636" y="143.47927255307314" width="5.242272727272726" height="78.8361619217514" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="115.88181818181819" y="126.17799756609563" width="5.242272727272726" height="84.57924877486951" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="121.4" y="146.2196440075929" width="5.242272727272726" height="78.39041366509612" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="126.91818181818181" y="139.49739122938496" width="5.242272727272726" height="80.81154438670976" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="132.43636363636364" y="139.4951352229171" width="5.242272727272726" height="80.03313543236186" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="137.95454545454544" y="139.32343250049266" width="5.242272727272726" height="76.80154623320489" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="143.47272727272727" y="146.8903515937663" width="5.242272727272726" height="72.30086752403949" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="148.9909090909091" y="139.51074393097224" width="5.242272727272726" height="81.4728183813691" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="154.5090909090909" y="135.01906490461533" width="5.242272727272726" height="83.762536879141" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="160.0272727272727" y="113.31985109091812" width="5.242272727272726" height="91.46268846214605" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="165.54545454545453" y="125.15390418845706" width="5.242272727272726" height="82.40522973194189" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="171.06363636363636" y="132.4563524211713" width="5.242272727272726" height="81.04567905024801" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="176.58181818181816" y="130.60855072440904" width="5.242272727272726" height="79.88686101437841" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="182.1" y="132.9784214731492" width="5.242272727272726" height="83.4055349702142" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="187.61818181818182" y="141.1912445977259" width="5.242272727272726" height="74.18762354903949" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="193.13636363636363" y="128.8931787131699" width="5.242272727272726" height="92.03412183892472" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="198.65454545454546" y="128.59574084078469" width="5.242272727272726" height="78.36242563612396" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="204.1727272727273" y="121.18367471937879" width="5.242272727272726" height="85.01756998402367" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="209.6909090909091" y="110.18446181021477" width="5.242272727272726" height="94.8652973791398" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="215.20909090909092" y="121.4364864215897" width="5.242272727272726" height="78.6203387560105" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="220.72727272727272" y="122.91235184063959" width="5.242272727272726" height="93.45261596492195" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="226.24545454545455" y="120.61006443711841" width="5.242272727272726" height="85.40645563191771" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="231.76363636363638" y="123.00113597057364" width="5.242272727272726" height="83.21533033669331" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="237.28181818181818" y="118.70024743713307" width="5.242272727272726" height="91.75970748152191" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="242.8" y="111.83691188639838" width="5.242272727272726" height="93.09421939333694" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="248.31818181818184" y="127.4091537253475" width="5.242272727272726" height="85.74993420484783" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="253.83636363636361" y="136.30520955056247" width="5.242272727272726" height="80.88593738728898" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="259.3545454545454" y="129.50194617624382" width="5.242272727272726" height="78.04952520525045" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="264.8727272727273" y="130.44730922459786" width="5.242272727272726" height="82.95891202763414" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="270.3909090909091" y="123.6412345595304" width="5.242272727272726" height="87.6600723564095" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="275.9090909090909" y="150.65788315346802" width="5.242272727272726" height="66.27976203373383" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="281.42727272727274" y="139.67193261849914" width="5.242272727272726" height="83.0789457199432" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="286.94545454545454" y="151.8502272362049" width="5.242272727272726" height="76.07007275537676" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="292.46363636363634" y="130.0293300771053" width="5.242272727272726" height="78.97200190183675" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="297.9818181818182" y="143.69714547981175" width="5.242272727272726" height="81.23987990908908" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="303.5" y="158.21998463132255" width="5.242272727272726" height="61.331415457125644" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="309.0181818181818" y="151.66274930279803" width="5.242272727272726" height="67.87318509840274" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="314.53636363636366" y="161.913133017458" width="5.242272727272726" height="67.88211117025382" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="320.0545454545454" y="155.37840773803234" width="5.242272727272726" height="73.4997881600606" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="325.57272727272726" y="154.0907112042946" width="5.242272727272726" height="61.58425641981096" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="331.09090909090907" y="161.87805463738852" width="5.242272727272726" height="58.09454050208305" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="336.6090909090909" y="158.45516699696498" width="5.242272727272726" height="60.69410272623913" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="342.1272727272727" y="164.66821145235667" width="5.242272727272726" height="54.3776788708652" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="347.6454545454546" y="169.82129703994784" width="5.242272727272726" height="65.96719849206515" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="353.16363636363633" y="180.17106698751434" width="5.242272727272726" height="47.93829040579249" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="358.6818181818182" y="169.93586223607866" width="5.242272727272726" height="60.6917432946971" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="364.2" y="176.7987229565308" width="5.242272727272726" height="60.6987088347836" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="369.71818181818185" y="177.6119060586688" width="5.242272727272726" height="66.02237432398474" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="375.23636363636365" y="178.9310099075695" width="5.242272727272726" height="56.05065517440427" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="380.7545454545455" y="185.97186920021022" width="5.242272727272726" height="51.9807332760329" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="386.27272727272725" y="155.12028137583482" width="5.242272727272726" height="64.53355510071798" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="391.7909090909091" y="159.91092100416026" width="5.242272727272726" height="66.53285626709777" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="397.3090909090909" y="172.14300715602022" width="5.242272727272726" height="67.08187017334062" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="402.82727272727277" y="164.54958529715887" width="5.242272727272726" height="58.748416747320796" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="408.3454545454546" y="159.47191514025798" width="5.242272727272726" height="71.53315999023586" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="413.8636363636363" y="165.26159172388108" width="5.242272727272726" height="64.81408485052938" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="419.3818181818182" y="156.88254619581278" width="5.242272727272726" height="70.65585480820944" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="424.9" y="177.3939219350566" width="5.242272727272726" height="56.437550392402706" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="430.41818181818184" y="156.685547987131" width="5.242272727272726" height="74.3012874676582" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="435.93636363636364" y="152.5269005144112" width="5.242272727272726" height="70.541187374099" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="441.45454545454544" y="159.79359105256765" width="5.242272727272726" height="67.53600078988202" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="446.97272727272724" y="152.17085952840353" width="5.242272727272726" height="72.48774452124718" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="452.4909090909091" y="164.13800555223185" width="5.242272727272726" height="59.203614591449416" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="458.0090909090909" y="152.50169856973912" width="5.242272727272726" height="73.2550431625758" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="463.52727272727276" y="155.35732683781313" width="5.242272727272726" height="65.2952148883088" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="469.04545454545456" y="154.6077760282886" width="5.242272727272726" height="70.19950004691984" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="474.56363636363636" y="145.21088671886872" width="5.242272727272726" height="79.12749606234688" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="480.08181818181816" y="146.44656839664657" width="5.242272727272726" height="73.25909982605123" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="485.6" y="154.20811363701392" width="5.242272727272726" height="63.97437172564952" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="491.1181818181818" y="149.46375685567088" width="5.242272727272726" height="63.66797204731066" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="496.6363636363637" y="160.36882512465434" width="5.242272727272726" height="58.85780072596082" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="502.1545454545454" y="148.36838373426906" width="5.242272727272726" height="72.63386635163069" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="507.67272727272723" y="140.17231151745588" width="5.242272727272726" height="74.84671414748541" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="513.1909090909091" y="142.443948977038" width="5.242272727272726" height="76.84952740609931" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="518.7090909090908" y="162.42542199057817" width="5.242272727272726" height="68.99748129492393" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="524.2272727272727" y="157.7697831550934" width="5.242272727272726" height="68.09687695289378" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="529.7454545454545" y="165.34132533350996" width="5.242272727272726" height="66.47308039358228" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="535.2636363636364" y="172.20641677640236" width="5.242272727272726" height="55.10889818090901" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="540.7818181818182" y="162.20191646395054" width="5.242272727272726" height="70.60574477391023" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="546.3000000000001" y="168.88551375462595" width="5.242272727272726" height="58.60527819964131" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="551.8181818181818" y="181.3808244705565" width="5.242272727272726" height="51.02377213811465" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="557.3363636363637" y="173.52579321987855" width="5.242272727272726" height="58.015102736629814" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="562.8545454545455" y="192.46155125849637" width="5.242272727272726" height="54.02696861839018" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="568.3727272727273" y="183.39313659719699" width="5.242272727272726" height="63.8924204480627" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="573.8909090909091" y="191.78661371825677" width="5.242272727272726" height="48.284351559316576" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="579.4090909090909" y="187.53669738959462" width="5.242272727272726" height="54.64171863330564" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="584.9272727272727" y="174.25949887628352" width="5.242272727272726" height="59.40799513957781" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="590.4454545454546" y="183.66328210333467" width="5.242272727272726" height="51.69268663317192" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="595.9636363636364" y="198.76745169551305" width="5.242272727272726" height="52.95350633076796" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="601.4818181818182" y="191.72923392471043" width="5.242272727272726" height="52.13184167106082" transform="matrix(1,0,0,1,0,0)" fill="#77BBFF"></rect><rect x="0" y="21.59070477573397" width="5.242272727272726" height="91.24377648258383" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="5.518181818181818" y="13.607175272827874" width="5.242272727272726" height="95.93635220847037" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="11.036363636363635" y="26.670494723108106" width="5.242272727272726" height="96.13393042074537" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="16.554545454545455" y="11.559457382704807" width="5.242272727272726" height="95.48684240614355" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="22.07272727272727" y="8.824805123895317" width="5.242272727272726" height="102.12401110094618" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="27.59090909090909" y="2.9702970297029765" width="5.242272727272726" height="94.85557271392204" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="33.10909090909091" y="16.687057044423852" width="5.242272727272726" height="103.1067983132312" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="38.627272727272725" y="5.732059008562771" width="5.242272727272726" height="103.54948504056266" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="44.14545454545454" y="20.192528761569804" width="5.242272727272726" height="92.33370019213835" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="49.663636363636364" y="23.174803592113676" width="5.242272727272726" height="90.70706329484796" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="55.18181818181818" y="23.231156752478853" width="5.242272727272726" height="91.39125829302878" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="60.7" y="18.755368520862305" width="5.242272727272726" height="94.78923055487054" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="66.21818181818182" y="25.195850324638172" width="5.242272727272726" height="96.3219361290724" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="71.73636363636363" y="45.30594471646481" width="5.242272727272726" height="93.46796696504579" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="77.25454545454545" y="35.90941942866533" width="5.242272727272726" height="83.156849191642" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="82.77272727272727" y="44.57319097204115" width="5.242272727272726" height="84.60712204865195" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="88.29090909090908" y="25.400743135581365" width="5.242272727272726" height="94.80889970483776" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="93.80909090909091" y="48.5746679896981" width="5.242272727272726" height="80.24866262431581" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="99.32727272727273" y="48.726264382353975" width="5.242272727272726" height="82.2103701490691" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="104.84545454545454" y="52.10454121510176" width="5.242272727272726" height="78.20525516591591" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="110.36363636363636" y="61.233481911495346" width="5.242272727272726" height="82.2457906415778" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="115.88181818181819" y="37.161629617409176" width="5.242272727272726" height="89.01636794868648" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="121.4" y="70.9605379334856" width="5.242272727272726" height="75.25910607410728" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="126.91818181818181" y="68.75651388369735" width="5.242272727272726" height="70.7408773456876" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="132.43636363636364" y="72.20380003543534" width="5.242272727272726" height="67.29133518748178" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="137.95454545454544" y="53.43208420129386" width="5.242272727272726" height="85.89134829919881" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="143.47272727272727" y="63.75109650777779" width="5.242272727272726" height="83.13925508598852" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="148.9909090909091" y="60.63993223114892" width="5.242272727272726" height="78.87081169982335" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="154.5090909090909" y="48.8489221807439" width="5.242272727272726" height="86.17014272387142" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="160.0272727272727" y="42.95266439855402" width="5.242272727272726" height="70.3671866923641" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="165.54545454545453" y="55.54255365627603" width="5.242272727272726" height="69.61135053218104" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="171.06363636363636" y="58.06924168479475" width="5.242272727272726" height="74.38711073637653" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="176.58181818181816" y="50.476885246849804" width="5.242272727272726" height="80.13166547755924" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="182.1" y="48.62780138797697" width="5.242272727272726" height="84.35062008517224" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="187.61818181818182" y="52.343670742423484" width="5.242272727272726" height="88.8475738553024" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="193.13636363636363" y="51.351638050514936" width="5.242272727272726" height="77.54154066265497" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="198.65454545454546" y="48.47033926903819" width="5.242272727272726" height="80.1254015717465" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="204.1727272727273" y="47.94103669829235" width="5.242272727272726" height="73.24263802108644" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="209.6909090909091" y="39.35867527331402" width="5.242272727272726" height="70.82578653690072" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="215.20909090909092" y="32.24927710618937" width="5.242272727272726" height="89.18720931540035" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="220.72727272727272" y="50.16805411152856" width="5.242272727272726" height="72.74429772911105" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="226.24545454545455" y="34.941476513109706" width="5.242272727272726" height="85.6685879240087" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="231.76363636363638" y="41.85069095208519" width="5.242272727272726" height="81.15044501848843" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="237.28181818181818" y="41.02147946336402" width="5.242272727272726" height="77.67876797376904" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="242.8" y="24.33866239657675" width="5.242272727272726" height="87.49824948982159" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="248.31818181818184" y="40.607460240304135" width="5.242272727272726" height="86.80169348504333" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="253.83636363636361" y="68.64366271632159" width="5.242272727272726" height="67.66154683424094" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="259.3545454545454" y="44.330192708163764" width="5.242272727272726" height="85.17175346808004" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="264.8727272727273" y="65.89753765811935" width="5.242272727272726" height="64.54977156647854" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="270.3909090909091" y="46.91783698217276" width="5.242272727272726" height="76.72339757735769" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="275.9090909090909" y="80.14148252110047" width="5.242272727272726" height="70.51640063236752" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="281.42727272727274" y="76.17342724389192" width="5.242272727272726" height="63.498505374607205" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="286.94545454545454" y="87.05315549483211" width="5.242272727272726" height="64.7970717413728" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="292.46363636363634" y="54.88878841612089" width="5.242272727272726" height="75.14054166098438" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="297.9818181818182" y="81.48088914871968" width="5.242272727272726" height="62.216256331092076" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="303.5" y="101.53601150182197" width="5.242272727272726" height="56.683973129500565" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="309.0181818181818" y="95.90902993767025" width="5.242272727272726" height="55.75371936512775" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="314.53636363636366" y="92.5371777180261" width="5.242272727272726" height="69.37595529943192" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="320.0545454545454" y="90.42819201225666" width="5.242272727272726" height="64.95021572577572" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="325.57272727272726" y="87.44723508947808" width="5.242272727272726" height="66.64347611481648" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="331.09090909090907" y="104.24301852312081" width="5.242272727272726" height="57.63503611426774" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="336.6090909090909" y="92.36126098113832" width="5.242272727272726" height="66.09390601582665" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="342.1272727272727" y="104.90206704718435" width="5.242272727272726" height="59.76614440517232" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="347.6454545454546" y="115.44688719279895" width="5.242272727272726" height="54.374409847148925" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="353.16363636363633" y="129.27806185441682" width="5.242272727272726" height="50.893005133097496" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="358.6818181818182" y="124.75378932899184" width="5.242272727272726" height="45.1820729070868" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="364.2" y="129.8154065004673" width="5.242272727272726" height="46.983316456063484" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="369.71818181818185" y="115.67391563937059" width="5.242272727272726" height="61.93799041929818" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="375.23636363636365" y="116.72549183115052" width="5.242272727272726" height="62.205518076419" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="380.7545454545455" y="134.9046384049293" width="5.242272727272726" height="51.067230795280885" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="386.27272727272725" y="90.58737381423012" width="5.242272727272726" height="64.53290756160467" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="391.7909090909091" y="96.71253170387638" width="5.242272727272726" height="63.198389300283836" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="397.3090909090909" y="121.67439682404287" width="5.242272727272726" height="50.46861033197737" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="402.82727272727277" y="101.30885520375594" width="5.242272727272726" height="63.24073009340295" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="408.3454545454546" y="96.64659487854465" width="5.242272727272726" height="62.82532026171332" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="413.8636363636363" y="95.44314113292228" width="5.242272727272726" height="69.81845059095879" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="419.3818181818182" y="96.96846048111044" width="5.242272727272726" height="59.91408571470232" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="424.9" y="114.11251836777015" width="5.242272727272726" height="63.28140356728643" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="430.41818181818184" y="81.19800981924061" width="5.242272727272726" height="75.48753816789036" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="435.93636363636364" y="76.6211339145836" width="5.242272727272726" height="75.90576659982763" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="441.45454545454544" y="89.50866365914081" width="5.242272727272726" height="70.28492739342683" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="446.97272727272724" y="85.83580034828665" width="5.242272727272726" height="66.33505918011689" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="452.4909090909091" y="82.31293546518265" width="5.242272727272726" height="81.82507008704916" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="458.0090909090909" y="83.53228974897709" width="5.242272727272726" height="68.96940882076204" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="463.52727272727276" y="84.6799479010374" width="5.242272727272726" height="70.67737893677575" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="469.04545454545456" y="84.87254417864386" width="5.242272727272726" height="69.73523184964472" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="474.56363636363636" y="75.31324483984199" width="5.242272727272726" height="69.89764187902675" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="480.08181818181816" y="59.681826775382405" width="5.242272727272726" height="86.76474162126418" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="485.6" y="83.00350662446601" width="5.242272727272726" height="71.20460701254791" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="491.1181818181818" y="70.02199639528726" width="5.242272727272726" height="79.44176046038358" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="496.6363636363637" y="73.01365225504227" width="5.242272727272726" height="87.35517286961206" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="502.1545454545454" y="73.5666229002799" width="5.242272727272726" height="74.80176083398919" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="507.67272727272723" y="69.40909087179955" width="5.242272727272726" height="70.7632206456563" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="513.1909090909091" y="55.72379470556561" width="5.242272727272726" height="86.72015427147238" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="518.7090909090908" y="81.91753343490277" width="5.242272727272726" height="80.5078885556754" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="524.2272727272727" y="80.1801242918863" width="5.242272727272726" height="77.58965886320708" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="529.7454545454545" y="84.6136578225464" width="5.242272727272726" height="80.72766751096358" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="535.2636363636364" y="89.77442272545102" width="5.242272727272726" height="82.43199405095136" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="540.7818181818182" y="84.20704521039076" width="5.242272727272726" height="77.9948712535598" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="546.3000000000001" y="84.09826177224193" width="5.242272727272726" height="84.787251982384" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="551.8181818181818" y="112.91301511380735" width="5.242272727272726" height="68.46780935674913" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="557.3363636363637" y="103.99690816902" width="5.242272727272726" height="69.52888505085853" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="562.8545454545455" y="125.60432918421344" width="5.242272727272726" height="66.85722207428293" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="568.3727272727273" y="111.45520310808493" width="5.242272727272726" height="71.93793348911205" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="573.8909090909091" y="118.23447295333301" width="5.242272727272726" height="73.55214076492375" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="579.4090909090909" y="105.03535754694528" width="5.242272727272726" height="82.50133984264932" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="584.9272727272727" y="99.72688974057297" width="5.242272727272726" height="74.53260913571054" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="590.4454545454546" y="101.14112010458803" width="5.242272727272726" height="82.52216199874664" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="595.9636363636364" y="129.46814669644797" width="5.242272727272726" height="69.29930499906509" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect><rect x="601.4818181818182" y="115.09968044649588" width="5.242272727272726" height="76.62955347821455" transform="matrix(1,0,0,1,0,0)" fill="#C1E0FF"></rect></svg><div class="detail"></div></div>
+                </div>
+                <div class="right" style="height:450px;">
+                    <h4 class="title">PAGE VIEW</h4>
+                    <!-- start stats -->
+                    <ul class="widget-inline-list clearfix">
+                        <li class="col-12"><span>962</span>Themeforest<i class="chart sparkline-green"><canvas width="105" height="30" style="display: inline-block; width: 105px; height: 30px; vertical-align: top;"></canvas></i></li>
+                        <li class="col-12"><span>367</span>Codecanyon<i class="chart sparkline-blue"><canvas width="105" height="30" style="display: inline-block; width: 105px; height: 30px; vertical-align: top;"></canvas></i></li>
+                        <li class="col-12"><span>92</span>Photodune<i class="chart sparkline-red"><canvas width="105" height="30" style="display: inline-block; width: 105px; height: 30px; vertical-align: top;"></canvas></i></li>
+                    </ul>
+                    <!-- end stats -->
+                </div>
+
+
+            </div>
+        </div>
+        <!-- End Chart Daily -->
+        <!-- Start Files -->
+        <div class="col-md-12 col-lg-5">
+            <div class="panel panel-widget" style="height:450px;">
+                <div class="panel-title">
+                    My Files <span class="label label-danger">29</span>
+                    <ul class="panel-tools">
+                        <li><a class="icon"><i class="fa fa-refresh"></i></a></li>
+                        <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body table-responsive">
+
+                    <table class="table table-dic table-hover ">
+                        <tbody>
+                            <tr>
+                                <td><i class="fa fa-folder-o"></i>Projects</td>
+                                <td>Folder</td>
+                                <td class="text-r">27/2/2015 12:34 AM</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-file-archive-o"></i>Backup</td>
+                                <td>Zip</td>
+                                <td class="text-r">27/2/2015 12:34 AM</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-file-code-o"></i>Kode Theme</td>
+                                <td>Html</td>
+                                <td class="text-r">27/2/2015 12:34 AM</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-file-pdf-o"></i>Documents</td>
+                                <td>Pdf</td>
+                                <td class="text-r">27/2/2015 12:34 AM</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-folder-o"></i>Themes</td>
+                                <td>Folder</td>
+                                <td class="text-r">27/2/2015 12:34 AM</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-folder-o"></i>Uploaded Files</td>
+                                <td>Folder</td>
+                                <td class="text-r">27/2/2015 12:34 AM</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-folder-o"></i>Personal Files</td>
+                                <td>Folder</td>
+                                <td class="text-r">27/2/2015 12:34 AM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <!-- End Files -->
+
+    </div>
+    <!-- End First Row -->
+    <!-- Start Second Row -->
+    <div class="row">
+
+
+
+        <!-- Start Today Activity -->
+        <div class="col-md-12 col-lg-3">
+            <div class="panel panel-widget" style="height:380px;">
+                <div class="panel-title">
+                    TODAY ACTIVITY <span class="label label-success">9</span>
+                    <ul class="panel-tools panel-tools-hover">
+                        <li><a class="icon"><i class="fa fa-refresh"></i></a></li>
+                        <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+
+                    <ul class="widget-inline-list clearfix">
+                        <li class="col-4"><span>1:52:22</span>Active Time</li>
+                        <li class="col-4"><span>60%</span>Completed</li>
+                        <li class="col-4"><span>0:11:46</span>Break Time</li>
+                    </ul>
+
+                    <div id="todayactivity" class="chart-on-bottom rickshaw_graph"><svg width="254" height="250"><g><path d="M0,14.576921753429843Q4.492517006802722,16.178314475251884,5.183673469387756,15.371536193340063C6.220408163265307,14.16136877047233,9.330612244897962,3.5359156064895356,10.367346938775512,2.4752475247525183S14.514285714285716,3.777722496086685,15.551020408163266,4.764855375969887S19.697959183673472,12.00458778644357,20.734693877551024,12.346576323584543S24.881632653061224,8.385766279173765,25.918367346938776,8.184740747379607S30.06530612244898,8.968853794414665,31.102040816326532,10.336321005642958S35.24897959183674,21.40472321212625,36.28571428571429,21.85941285966254S40.4326530612245,14.182765951709237,41.46938775510205,14.883217481005858S45.61632653061225,28.358585447352898,46.6530612244898,28.863928152628745S50.800000000000004,22.103642251860187,51.83673469387755,19.936644533764337S55.98367346938777,5.980121674063085,57.020408163265316,7.193950971670233S61.167346938775516,29.85371823636551,62.204081632653065,32.07493750983582S66.35102040816328,30.26899875553628,67.38775510204083,29.406143706373342S71.53469387755104,22.65052549625344,72.57142857142858,23.446387018206423S76.71836734693878,35.869517967710024,77.75510204081633,37.364758925903175S81.90204081632655,38.69467807285198,82.9387755102041,38.39879660013793S87.0857142857143,34.96705685645004,88.12244897959185,34.40594419876268S92.26938775510204,33.16451743515132,93.3061224489796,32.787670023264326S97.45306122448982,30.222734523060154,98.48979591836736,30.63747007989278S102.63673469387756,34.49459296055093,103.6734693877551,36.93502559159057S107.82040816326531,51.792108983077696,108.85714285714286,55.04179639028919S113.00408163265308,70.53398624567696,114.04081632653063,69.43189966370556S118.18775510204082,45.48737813484957,119.22448979591837,44.020930570575274S123.37142857142858,53.334333115621625,124.40816326530613,54.76742402096258S128.55510204081634,59.02695169188524,129.59183673469389,58.35183962398483S133.7387755102041,49.040779994459484,134.77551020408166,48.01630334195852S138.92244897959185,47.06064907723635,139.9591836734694,48.10707309897518S144.10612244897962,59.73921680464931,145.14285714285717,58.480543559346785S149.2897959183674,35.807775789526005,150.32653061224494,35.520340645949915S154.4734693877551,54.324379204749924,155.51020408163265,55.606192123585856S159.65714285714287,49.167384996947725,160.69387755102042,48.33846983430922S164.84081632653064,47.706617985652315,165.8775510204082,47.31704049720082S170.02448979591838,41.877341530735215,171.06122448979593,44.442694949794316S175.20816326530615,72.01394618257274,176.2448979591837,72.97057468779184S180.3918367346939,57.791816666742335,181.42857142857144,54.00898000198538S185.57551020408164,35.95849359314223,186.6122448979592,35.14220804022224S190.7591836734694,44.422346256836306,191.79591836734696,45.84612447278553S195.94285714285718,50.113883988515575,196.97959183673473,49.37999019971451S201.12653061224492,40.949566887162874,202.16326530612247,38.5071865847749S206.31020408163266,27.293865325534032,207.3469387755102,24.956187175834742S211.49387755102043,14.131341575893149,212.53061224489798,15.130405087782009S216.67755102040817,32.92809170892393,217.71428571428572,34.94682229472335S221.86122448979594,34.6346545069116,222.8979591836735,35.317710945776156S227.04489795918371,41.87942938638346,228.08163265306126,41.77738668336892S232.22857142857146,33.03393258157767,233.265306122449,34.29728391563077S237.4122448979592,53.8420190760727,238.44897959183675,54.41090002389987S242.59591836734697,40.646157486644235,243.63265306122452,39.98609339390242S247.7795918367347,45.37540982664457,248.81632653061226,47.81025909648176Q249.5074829931973,49.43349194303988,254,64.33458609227426L254,148.42475482695107Q249.5074829931973,137.32150272506078,248.81632653061226,136.49064942322468C247.7795918367347,135.24436947047053,244.66938775510206,134.78110581520482,243.63265306122452,135.96195529940957S239.4857142857143,147.97974161498854,238.44897959183675,148.29914426527208S234.30204081632655,140.34758355680995,233.265306122449,139.15598180224487S229.1183673469388,136.62320259186444,228.08163265306126,136.38312671962115S223.93469387755104,136.63295330589236,222.8979591836735,136.75522307981203S218.75102040816327,138.25315176301638,217.71428571428572,137.60582445881778S213.56734693877553,130.55007308774174,212.53061224489798,130.281950037826S208.38367346938776,134.24071045567374,207.3469387755102,134.9245939596604S203.20000000000002,136.07323014755497,202.16326530612247,137.12078507769257S198.01632653061228,145.15426516418455,196.97959183673473,145.40014326103653S192.8326530612245,139.32736219358839,191.79591836734696,139.57956604621253S187.64897959183673,147.69668989282712,186.6122448979592,147.92218178727813S182.465306122449,140.72992834569254,181.42857142857144,141.83448499072256S177.28163265306125,158.51781810742077,176.2448979591837,158.96774823757832S172.09795918367348,148.22305711395106,171.06122448979593,146.3337862922982S166.91428571428574,139.88103604192196,165.8775510204082,140.07504002104986S161.73061224489797,146.3379795738642,160.69387755102042,148.27382608357718S156.5469387755102,160.4865655646995,155.51020408163265,159.43350511817965S151.36326530612249,138.52058724691196,150.32653061224494,137.7432216183787S146.17959183673472,149.60557808479965,145.14285714285717,151.65984883284696S140.99591836734695,158.04848762296044,139.9591836734694,158.285929098852S135.8122448979592,154.18112161786323,134.77551020408166,154.03426359176248S130.62857142857143,157.7387476783467,129.59183673469389,156.81734883784452S125.44489795918368,146.54259869020382,124.40816326530613,144.8202751867407S120.26122448979592,138.17187002628756,119.22448979591837,139.59411380321328S115.07755102040818,157.49742215894904,114.04081632653063,159.04271295599779S109.89387755102041,156.85514585813672,108.85714285714286,155.04702177370078S104.71020408163265,142.9643618120381,103.6734693877551,140.96147211163827S99.52653061224491,134.85425514209257,98.48979591836736,135.01812476970235S94.34285714285714,141.17178284571082,93.3061224489796,142.60016838773618S89.1591836734694,148.20424435364657,88.12244897959185,149.30198018995577S83.97551020408164,153.1488693894015,82.9387755102041,153.57752675082804S78.79183673469387,154.61895464765936,77.75510204081633,153.58855380422096S73.60816326530613,144.9058487521617,72.57142857142858,143.2735183164439S68.42448979591838,137.84471586364975,67.38775510204083,137.26524944704292S63.24081632653061,138.37210030921236,62.204081632653065,137.47885415037547S58.057142857142864,128.20070432767815,57.020408163265316,128.33278785867392S52.8734693877551,138.26770802421493,51.83673469387755,138.79968946033318S47.689795918367345,134.74071161896816,46.6530612244898,133.65260221985665S42.506122448979596,127.63787699269612,41.46938775510205,127.91859546921792S37.32244897959184,135.79027334247047,36.28571428571429,136.45978698507463S32.138775510204084,136.10154566653011,31.102040816326532,134.6137318952596S26.955102040816328,121.44443578431706,25.918367346938776,121.58164927236939S21.771428571428576,135.10276449287946,20.734693877551024,135.98586677578282S16.587755102040816,131.6197530381252,15.551020408163266,130.4126721014032S11.404081632653062,123.73054634877342,10.367346938775512,123.91505740856287S6.220408163265307,130.72117463769192,5.183673469387756,132.25778269929776Q4.492517006802722,133.28218807370166,0,139.28113802462138Z" class="area" fill="#CDC0DC"></path></g><g><path d="M0,139.28113802462138Q4.492517006802722,133.28218807370166,5.183673469387756,132.25778269929776C6.220408163265307,130.72117463769192,9.330612244897962,124.09956846835233,10.367346938775512,123.91505740856287S14.514285714285716,129.20559116468118,15.551020408163266,130.4126721014032S19.697959183673472,136.8689690586862,20.734693877551024,135.98586677578282S24.881632653061224,121.71886276042171,25.918367346938776,121.58164927236939S30.06530612244898,133.1259181239891,31.102040816326532,134.6137318952596S35.24897959183674,137.1293006276788,36.28571428571429,136.45978698507463S40.4326530612245,128.1993139457397,41.46938775510205,127.91859546921792S45.61632653061225,132.56449282074513,46.6530612244898,133.65260221985665S50.800000000000004,139.33167089645144,51.83673469387755,138.79968946033318S55.98367346938777,128.4648713896697,57.020408163265316,128.33278785867392S61.167346938775516,136.58560799153858,62.204081632653065,137.47885415037547S66.35102040816328,136.68578303043608,67.38775510204083,137.26524944704292S71.53469387755104,141.6411878807261,72.57142857142858,143.2735183164439S76.71836734693878,152.55815296078256,77.75510204081633,153.58855380422096S81.90204081632655,154.00618411225457,82.9387755102041,153.57752675082804S87.0857142857143,150.39971602626497,88.12244897959185,149.30198018995577S92.26938775510204,144.02855392976153,93.3061224489796,142.60016838773618S97.45306122448982,135.18199439731214,98.48979591836736,135.01812476970235S102.63673469387756,138.95858241123844,103.6734693877551,140.96147211163827S107.82040816326531,153.23889768926483,108.85714285714286,155.04702177370078S113.00408163265308,160.58800375304654,114.04081632653063,159.04271295599779S118.18775510204082,141.016357580139,119.22448979591837,139.59411380321328S123.37142857142858,143.09795168327759,124.40816326530613,144.8202751867407S128.55510204081634,155.89594999734234,129.59183673469389,156.81734883784452S133.7387755102041,153.88740556566174,134.77551020408166,154.03426359176248S138.92244897959185,158.52337057474355,139.9591836734694,158.285929098852S144.10612244897962,153.71411958089428,145.14285714285717,151.65984883284696S149.2897959183674,136.96585598984544,150.32653061224494,137.7432216183787S154.4734693877551,158.3804446716598,155.51020408163265,159.43350511817965S159.65714285714287,150.20967259329015,160.69387755102042,148.27382608357718S164.84081632653064,140.26904400017776,165.8775510204082,140.07504002104986S170.02448979591838,144.44451547064537,171.06122448979593,146.3337862922982S175.20816326530615,159.41767836773587,176.2448979591837,158.96774823757832S180.3918367346939,142.93904163575257,181.42857142857144,141.83448499072256S185.57551020408164,148.14767368172915,186.6122448979592,147.92218178727813S190.7591836734694,139.83176989883668,191.79591836734696,139.57956604621253S195.94285714285718,145.64602135788851,196.97959183673473,145.40014326103653S201.12653061224492,138.16834000783018,202.16326530612247,137.12078507769257S206.31020408163266,135.60847746364706,207.3469387755102,134.9245939596604S211.49387755102043,130.01382698791025,212.53061224489798,130.281950037826S216.67755102040817,136.95849715461918,217.71428571428572,137.60582445881778S221.86122448979594,136.8774928537317,222.8979591836735,136.75522307981203S227.04489795918371,136.14305084737785,228.08163265306126,136.38312671962115S232.22857142857146,137.96438004767978,233.265306122449,139.15598180224487S237.4122448979592,148.6185469155556,238.44897959183675,148.29914426527208S242.59591836734697,137.1428047836143,243.63265306122452,135.96195529940957S247.7795918367347,135.24436947047053,248.81632653061226,136.49064942322468Q249.5074829931973,137.32150272506078,254,148.42475482695107L254,250Q249.5074829931973,250,248.81632653061226,250C247.7795918367347,250,244.66938775510206,250,243.63265306122452,250S239.4857142857143,250,238.44897959183675,250S234.30204081632655,250,233.265306122449,250S229.1183673469388,250,228.08163265306126,250S223.93469387755104,250,222.8979591836735,250S218.75102040816327,250,217.71428571428572,250S213.56734693877553,250,212.53061224489798,250S208.38367346938776,250,207.3469387755102,250S203.20000000000002,250,202.16326530612247,250S198.01632653061228,250,196.97959183673473,250S192.8326530612245,250,191.79591836734696,250S187.64897959183673,250,186.6122448979592,250S182.465306122449,250,181.42857142857144,250S177.28163265306125,250,176.2448979591837,250S172.09795918367348,250,171.06122448979593,250S166.91428571428574,250,165.8775510204082,250S161.73061224489797,250,160.69387755102042,250S156.5469387755102,250,155.51020408163265,250S151.36326530612249,250,150.32653061224494,250S146.17959183673472,250,145.14285714285717,250S140.99591836734695,250,139.9591836734694,250S135.8122448979592,250,134.77551020408166,250S130.62857142857143,250,129.59183673469389,250S125.44489795918368,250,124.40816326530613,250S120.26122448979592,250,119.22448979591837,250S115.07755102040818,250,114.04081632653063,250S109.89387755102041,250,108.85714285714286,250S104.71020408163265,250,103.6734693877551,250S99.52653061224491,250,98.48979591836736,250S94.34285714285714,250,93.3061224489796,250S89.1591836734694,250,88.12244897959185,250S83.97551020408164,250,82.9387755102041,250S78.79183673469387,250,77.75510204081633,250S73.60816326530613,250,72.57142857142858,250S68.42448979591838,250,67.38775510204083,250S63.24081632653061,250,62.204081632653065,250S58.057142857142864,250,57.020408163265316,250S52.8734693877551,250,51.83673469387755,250S47.689795918367345,250,46.6530612244898,250S42.506122448979596,250,41.46938775510205,250S37.32244897959184,250,36.28571428571429,250S32.138775510204084,250,31.102040816326532,250S26.955102040816328,250,25.918367346938776,250S21.771428571428576,250,20.734693877551024,250S16.587755102040816,250,15.551020408163266,250S11.404081632653062,250,10.367346938775512,250S6.220408163265307,250,5.183673469387756,250Q4.492517006802722,250,0,250Z" class="area" fill="#9A80B9"></path></g></svg><div class="detail"></div></div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End Today Activity -->
+        <!-- Start Server Status -->
+        <div class="col-md-12 col-lg-6">
+            <div class="panel panel-widget" style="height:380px;">
+                <div class="panel-title">
+                    SERVER STATUS <span class="label label-default">196</span>
+                    <ul class="panel-tools panel-tools-hover">
+                        <li><a class="icon"><i class="fa fa-refresh"></i></a></li>
+                        <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+
+                    <ul class="widget-inline-list clearfix">
+                        <li class="col-3 color10"><span>28.9GB</span>Total Usage</li>
+                        <li class="col-3"><span>92%</span>Space Left</li>
+                        <li class="col-3 color7"><span>22%</span>CPU</li>
+                        <li class="col-3"><span>512MB</span>Total RAM</li>
+                    </ul>
+
+                    <div id="realtime" class="flotchart-placeholder" style="height: 190px; padding: 0px; position: relative;"><canvas class="flot-base" width="480" height="190" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 480px; height: 190px;"></canvas><div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: inherit;"><div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;"><div class="flot-tick-label tickLabel" style="position: absolute; top: 175px; left: 12px; text-align: right;">0</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 131px; left: 6px; text-align: right;">25</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 88px; left: 6px; text-align: right;">50</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 44px; left: 6px; text-align: right;">75</div><div class="flot-tick-label tickLabel" style="position: absolute; top: 1px; left: 0px; text-align: right;">100</div></div></div><canvas class="flot-overlay" width="480" height="190" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 480px; height: 190px;"></canvas></div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End Server Status -->
+        <!-- Start Profile Widget -->
+        <div class="col-md-12 col-lg-3">
+            <div class="widget profile-widget" style="height:380px;">
+                <img src="img/profileimg.png" class="profile-image" alt="img">
+                <h1>Jonathan Doe</h1>
+                <p><i class="fa fa-map-marker"></i> London</p>
+                <a href="#" class="btn btn-sm">Follow</a>
+                <ul class="stats widget-inline-list clearfix">
+                    <li class="col-4"><span>2.109</span>Followers</li>
+                    <li class="col-4"><span>596</span>Photos</li>
+                    <li class="col-4"><span>902</span>Like</li>
+                </ul>
+            </div>
+        </div>
+        <!-- End Profile Widget -->
+
+
+    </div>
+    <!-- End Second Row -->
+    <!-- Start Third Row -->
+    <div class="row">
+
+
+        <!-- Start General Stats -->
+        <div class="col-md-12 col-lg-6">
+            <div class="panel panel-widget" style="height:205px;">
+                <div class="panel-title">
+                    General Stats
+                </div>
+                <div class="panel-body">
+
+                    <div class="easypie margin-b-50" data-percent="82"><span>82%</span>New Visit<canvas height="110" width="110"></canvas></div>
+                    <div class="easypie margin-b-50" data-percent="30"><span>30%</span>Order<canvas height="110" width="110"></canvas></div>
+                    <div class="easypie margin-b-50 margin-b-40" data-percent="62"><span>62%</span>Page View<canvas height="110" width="110"></canvas></div>
+                    <div class="easypie margin-b-50" data-percent="15"><span>15%</span>Client<canvas height="110" width="110"></canvas></div>
+                    <div class="easypie margin-b-50" data-percent="45"><span>45%</span>Storage<canvas height="110" width="110"></canvas></div>
+                    <div class="easypie margin-b-50" data-percent="75"><span>76%</span>Comments<canvas height="110" width="110"></canvas></div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End General Stats -->
+        <!-- Start TwitterBox -->
+        <div class="col-md-6 col-lg-3">
+            <div class="widget socialbox" style="background:#02A8F3; height:205px;">
+
+                <p class="text">
+                    Never in all their history have men been able truly...
+                </p>
+                <p class="text-info">22 May, 2015 via mobile</p>
+
+                <div class="logo"><i class="fa fa-twitter"></i></div>
+
+                <ul class="info">
+                    <li><i class="fa fa-retweet"></i>694</li>
+                    <li><i class="fa fa-star-o"></i>2.192</li>
+                </ul>
+
+            </div>
+        </div>
+        <!-- End TwitterBox -->
+        <!-- Start FacebookBox -->
+        <div class="col-md-6 col-lg-3">
+            <div class="widget socialbox" style="background:#47639E; height:205px;">
+
+                <p class="text">
+                    Science has not yet mastered prophecy.
+                </p>
+                <p class="text-info">22 May, 2015 via mobile</p>
+
+                <div class="logo"><i class="fa fa-facebook"></i></div>
+
+                <ul class="info">
+                    <li><i class="fa fa-thumbs-up"></i>694</li>
+                    <li><i class="fa fa-comment"></i>2.192</li>
+                </ul>
+
+            </div>
+        </div>
+        <!-- End FacebookBox -->
+
+    </div>
+    <!-- End Third Row -->
+    <!-- Start Fourth Row -->
+    <div class="row">
+
+        <!-- Start Browser Stats -->
+        <div class="col-md-12 col-lg-3">
+            <div class="panel panel-widget">
+                <div class="panel-title">
+                    Browser Stats
+                    <ul class="panel-tools panel-tools-hover">
+                        <li><a class="icon"><i class="fa fa-refresh"></i></a></li>
+                        <li><a class="icon minimise-tool"><i class="fa fa-minus"></i></a></li>
+                        <li><a class="icon expand-tool"><i class="fa fa-expand"></i></a></li>
+                        <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+
+                    <ul class="basic-list">
+                        <li>Google Chrome <span class="right label label-default">42.8%</span></li>
+                        <li>Firefox <span class="right label label-danger">16.9%</span></li>
+                        <li>Safari <span class="right label label-success">15.5%</span></li>
+                        <li>Opera <span class="right label label-primary">11.8%</span></li>
+                        <li>Internet Explorer <span class="right label label-danger">3.2%</span></li>
+                        <li>Mobile <span class="right label label-warning">3%</span></li>
+                        <li>Others <span class="right label label-warning">0%</span></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <!-- End Browser Stats -->
+        <!-- Start Orders -->
+        <div class="col-md-12 col-lg-6">
+            <div class="panel panel-widget">
+                <div class="panel-title">
+                    LAST ORDERS <span class="label label-warning">196</span>
+                    <ul class="panel-tools">
+                        <li><a class="icon search-tool"><i class="fa fa-search"></i></a></li>
+                        <li><a class="icon minimise-tool"><i class="fa fa-minus"></i></a></li>
+                        <li><a class="icon expand-tool"><i class="fa fa-expand"></i></a></li>
+                        <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="panel-search">
+                    <form>
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <i class="fa fa-search icon"></i>
+                    </form>
+                </div>
+
+
+                <div class="panel-body table-responsive">
+
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <td class="text-center"><i class="fa fa-trash"></i></td>
+                                <td>Order ID</td>
+                                <td>Product</td>
+                                <td>Buyer</td>
+                                <td>Date</td>
+                                <td>Payment</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center"><div class="checkbox margin-t-0"><input id="checkbox1" type="checkbox"><label for="checkbox1"></label></div></td>
+                                <td># <b>9652</b></td>
+                                <td>Kode Gaming Laptop</td>
+                                <td>John Doe</td>
+                                <td>12/10/2015</td>
+                                <td>Credit Card</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><div class="checkbox margin-t-0"><input id="checkbox2" type="checkbox"><label for="checkbox2"></label></div></td>
+                                <td># <b>1963</b></td>
+                                <td>New Season Jacket</td>
+                                <td>Jane Doe</td>
+                                <td>12/10/2015</td>
+                                <td>Paypal</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><div class="checkbox margin-t-0"><input id="checkbox3" type="checkbox"><label for="checkbox3"></label></div></td>
+                                <td># <b>9652</b></td>
+                                <td>IO Mouse</td>
+                                <td>Jonathan Doe</td>
+                                <td>12/10/2015</td>
+                                <td>Credit Card</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><div class="checkbox margin-t-0"><input id="checkbox4" type="checkbox"><label for="checkbox4"></label></div></td>
+                                <td># <b>9651</b></td>
+                                <td>Doe Bike</td>
+                                <td>Jonathan Doe</td>
+                                <td>12/10/2015</td>
+                                <td>Credit Card</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <!-- End Orders -->
+        <!-- Start Inbox -->
+        <div class="col-md-12 col-lg-3">
+            <div class="panel panel-widget">
+                <div class="panel-title">
+                    Inbox <span class="label label-danger">9</span>
+                    <ul class="panel-tools">
+                        <li><a class="icon minimise-tool"><i class="fa fa-minus"></i></a></li>
+                        <li><a class="icon expand-tool"><i class="fa fa-expand"></i></a></li>
+                        <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+
+                    <ul class="mailbox-inbox">
+
+                        <li>
+                            <a href="#" class="item clearfix">
+                                <img src="img/profileimg.png" alt="img" class="img">
+                                <span class="from">Jonathan Doe</span>
+                                Hello, m8 how is goin ?
+                                <span class="date">22 May</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="item clearfix">
+                                <img src="img/profileimg2.png" alt="img" class="img">
+                                <span class="from">Egemem Ka</span>
+                                Problems look mighty small...
+                                <span class="date">22 May</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="item clearfix">
+                                <img src="img/profileimg3.png" alt="img" class="img">
+                                <span class="from">James Throwing</span>
+                                New job offer ?
+                                <span class="date">22 May</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="item clearfix">
+                                <img src="img/profileimg4.png" alt="img" class="img">
+                                <span class="from">Timmy Jefsin</span>
+                                Tonight Party
+                                <span class="date">22 May</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <!-- End Inbox -->
+
+    </div>
+    <!-- End Fourth Row -->
+    <!-- Start Fifth Row -->
+    <div class="row">
+
+
+        <!-- Start Project Stats -->
+        <div class="col-md-12 col-lg-6">
+            <div class="panel panel-widget">
+                <div class="panel-title">
+                    Projects Stats <span class="label label-info">62</span>
+                    <ul class="panel-tools">
+                        <li><a class="icon minimise-tool"><i class="fa fa-minus"></i></a></li>
+                        <li><a class="icon expand-tool"><i class="fa fa-expand"></i></a></li>
+                        <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="panel-search">
+                    <form>
+                        <input type="text" class="form-control" placeholder="Search...">
+                        <i class="fa fa-search icon"></i>
+                    </form>
+                </div>
+
+
+                <div class="panel-body table-responsive">
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Project</td>
+                                <td>Status</td>
+                                <td class="text-right">Progress</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>965</td>
+                                <td>Kode Dashboard Template</td>
+                                <td><span class="label label-default">Developing</span></td>
+                                <td class="text-right"><span class="demo-project-stats"><canvas width="100" height="20" style="display: inline-block; width: 100px; height: 20px; vertical-align: top;"></canvas></span></td>
+                            </tr>
+                            <tr>
+                                <td>620</td>
+                                <td>EBI iOS Application</td>
+                                <td><span class="label label-warning">Design</span></td>
+                                <td class="text-right"><span class="demo-project-stats"><canvas width="100" height="20" style="display: inline-block; width: 100px; height: 20px; vertical-align: top;"></canvas></span></td>
+                            </tr>
+                            <tr>
+                                <td>621</td>
+                                <td>Kode Landing Page</td>
+                                <td><span class="label label-info">Testing</span></td>
+                                <td class="text-right"><span class="demo-project-stats"><canvas width="100" height="20" style="display: inline-block; width: 100px; height: 20px; vertical-align: top;"></canvas></span></td>
+                            </tr>
+                            <tr>
+                                <td>621</td>
+                                <td>John Coffe Shop Logo</td>
+                                <td><span class="label label-danger">Canceled</span></td>
+                                <td class="text-right"><span class="demo-project-stats"><canvas width="100" height="20" style="display: inline-block; width: 100px; height: 20px; vertical-align: top;"></canvas></span></td>
+                            </tr>
+                            <tr>
+                                <td>621</td>
+                                <td>BKM Website Design</td>
+                                <td><span class="label label-primary">Reply waiting</span></td>
+                                <td class="text-right"><span class="demo-project-stats"><canvas width="100" height="20" style="display: inline-block; width: 100px; height: 20px; vertical-align: top;"></canvas></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <!-- Start Project Stats -->
+        <!-- Start BlogPost -->
+        <div class="col-md-12 col-lg-3">
+            <div class="panel panel-widget blog-post">
+                <div class="panel-body">
+
+                    <div class="image-div color10-bg">
+                        <img src="img/example1.jpg" class="image" alt="img">
+                        <h1 class="title"><a href="#">Across the sea of space, the stars are other suns.</a></h1>
+                    </div>
+                    <p class="text">There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally...</p>
+                    <a href="#">Read More</a>
+                    <p class="author">
+                        <img src="img/profileimg.png" alt="img">
+                        <span>Jonathan Doe</span>
+                        Designer
+                    </p>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- End BlogPost -->
+        <!-- Start Teammates -->
+        <div class="col-md-12 col-lg-3">
+            <div class="panel panel-info panel-widget">
+                <div class="panel-title">
+                    Teammates
+                </div>
+                <div class="panel-body">
+                    <ul class="basic-list image-list">
+                        <li><img src="img/profileimg.png" alt="img" class="img"><b>Jonathan Doe</b><span class="desc">Designer</span></li>
+                        <li><img src="img/profileimg2.png" alt="img" class="img"><b>Egemem Ka</b><span class="desc">Front-End Developer</span></li>
+                        <li><img src="img/profileimg3.png" alt="img" class="img"><b>Timmy Jefsin</b><span class="desc">Back-End Developer</span></li>
+                        <li><img src="img/profileimg4.png" alt="img" class="img"><b>James K. Throwing</b><span class="desc">Marketing</span></li>
+                        <li><img src="img/profileimg5.png" alt="img" class="img"><b>John Doe</b><span class="desc">iOS Developer</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Teammates -->
+
+
+    </div>
+    <!-- End Fifth Row -->
+
+
+
+
+</div>
+<div class="row" style="margin:66px 20px 40px 20px;padding:10px;">
+ 
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box ">
+            <div class="icon bg-light-green">
+                <i class="material-icons">people</i>
+            </div>
+            <a href="@Url.Action("StudentDatas", "Index")">
+                <div class="content">
+
+                    <div class="text">Student's</div>
+
+                    <div class="number count-to" data-from="0" data-to="117" data-speed="1000" data-fresh-interval="20">
+                        @student
+                    </div>
+
+                </div>
+            </a>
+</div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <a href="@Url.Action("CourseFinishAlert", "Default")">
+                <div class="icon bg-purple">
+                    <i class="material-icons">file_copy</i>
+                </div>
+                <div class="content">
+                    <div class="text">Course Alert</div>
+
+                    <div class="number count-to" data-from="0" data-to="117" data-speed="1000" data-fresh-interval="20"><span id="ctl00_cpmain_lblins">@totalcourse</span></div>
+
+                </div>
+            </a>
+</div>
+        
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <div class="icon bg-indigo">
+                <i class="material-icons">aspect_ratio</i>
+            </div>
+            <div class="content">
+                <a href="@Url.Action("Index", "Logs")">
+                    <div class="text">Fee Alert</div>
+                    <div class="number count-to" data-from="0" data-to="257" data-speed="1000" data-fresh-interval="20"> <span id="ctl00_cpmain_lblpair">@feealert</span></div>
+                </a>
+                    </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header card-header-divider">Top 5 Inquiry<span class="card-subtitle">This is the Current Inquries</span></div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Contact
+                        </th>
+                        <th>
+                           Category
+                        </th>
+                       
+                    </tr>
+
+                    @foreach (var item in dd)
+            {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.contact)
+                            </td>
+                            <td>
+                                @{ Category cc = db.Categories.FirstOrDefault(x => x.Categoryid == item.Categoryid);}
+                                @cc.Name
+                            </td>
+                           
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header card-header-divider">Inquiry Alert<span class="card-subtitle">This is the Alert for Inquries</span></div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered table-hover" id="table1">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Contact
+                            </th>
+                            <th>
+                                Last Feedback
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                        </thead>
+                        @foreach (var item in feed)
+                        {
+                            <tr>
+                                <td>
+                                    @{ tblinquiry cc = db.tblinquiries.FirstOrDefault(x => x.inquiryid == item.inquiryid);}
+                                    @cc.name
+
+                                </td>
+                                <td>
+                                    @cc.contact
+                                </td>
+                                <td>
+                                    @item.feedback
+                                </td>
+                                <td>
+                                    @*@Html.ActionLink("Follow Up", "follow","tblfeedbacks", new { id = item.Id })*@
+                                    <a href="javascript:void(0);" onclick="AddEditEmployee(@item.Id)">Follow Up</a>
+
+                                </td>
+
+                            </tr>
+                                        }
+
+                </table>
+            </div>
+        </div>
+    </div>
+    @*<div class="modal fade" id="myModal1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    
+                </div>
+                <div class="modal-body" id="myModalBodyDiv1">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>*@
+    <div class="modal fade colored-header colored-header-primary" id="form-bp1" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-colored">
+                    <h3 class="modal-title">Update Follow Up</h3>
+                    <button class="close md-close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close">       </span></button>
+                </div>
+                <div class="modal-body" id="myModalBodyDiv1">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary md-close" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary md-close" type="button" data-dismiss="modal">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"
+        integrity="sha256-it5nQKHTz+34HijZJQkpNBIHsjpV8b6QzMJs9tmOBSo="
+        crossorigin="anonymous"></script>
+@section scripts
+{
+    <script>
+
+
+    var AddEditEmployee=function(employeeId){
+        debugger;
+        var url = "/Default/Follow?id=" + employeeId;
+       // var url = "/Model/EmployeePartial";
+        $("#myModalBodyDiv1").load(url, function () {
+
+            $("#form-bp1").modal("show");
+
+        })
+
+    }
+    </script>
+}

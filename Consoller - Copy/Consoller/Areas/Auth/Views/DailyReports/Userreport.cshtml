@@ -1,0 +1,136 @@
+﻿@model IEnumerable<Consoller.Areas.Auth.Models.Recipt_Details>
+@using Consoller.Areas.Auth.Models
+@using Consoller.Models
+@{
+    ViewBag.Title = "Userreport";
+    Layout = "~/Areas/Auth/Views/Shared/Layout.cshtml";
+    dbcontext db = new dbcontext();
+}
+
+<h2>Userreport</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>IELTS Fees</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>
+                            RollNo
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Teacher
+                        </th>
+                        <th>
+                            Course
+                        </th>
+                        <th>Mode</th>
+                        <th>
+                            Today Paid
+                        </th>
+                        <th>
+                            Balance
+                        </th>
+                        <th>
+                            Joining Date
+                        </th>
+
+                        <th>
+                            End Date
+                        </th>
+
+
+
+                    </tr>
+                </thead>
+                @{
+                    int sno3 = 0;
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @{ sno3++; }
+                            @sno3
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RollNo)
+                        </td>
+                        <td>
+                            @{
+                                tblstudentdata stu = db.tblstudentdata.FirstOrDefault(x => x.rollno == item.RollNo && x.uid == item.franchid && x.Status == true);
+                            }
+                            @stu.name
+                        </td>
+                        <td>
+                            @{
+
+                                tblreceptionist re = db.tblreceptionists.FirstOrDefault(x => x.Id == stu.UserId);
+                            }
+                            @re.name
+                        </td>
+                        <td>
+                            @{
+                                Course course = db.Courses.FirstOrDefault(x => x.CourseId == item.CourseId && x.franchid == stu.uid);
+                            }
+                            @course.CourseName
+                        </td>
+                        <td>
+                            @item.Type
+                        </td>
+                        <td>
+                            @item.Amount
+                        </td>
+                        <td>
+                            @{
+                                Fees_Master fee = db.Fees_Master.FirstOrDefault(x => x.RollNo == item.RollNo && x.franchid == item.franchid && x.Status == true);
+                                var balance = (Convert.ToInt32(fee.TotalFees) - (Convert.ToInt32(fee.PaidFees) + Convert.ToInt32(fee.discount)));
+                            }
+                            @balance
+                        </td>
+                        <td>
+                            @{
+                                StudentCourse sc = db.StudentCourses.FirstOrDefault(x => x.RollNo == item.RollNo && x.Uid == item.franchid && x.Status == true);
+                            }
+                            @Convert.ToDateTime(sc.Admitdate).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @{
+                                StudentCourse sc1 = db.StudentCourses.FirstOrDefault(x => x.RollNo == item.RollNo && x.Uid == item.franchid && x.Status == true);
+                            }
+                            @Convert.ToDateTime(sc1.enddate).ToString("dd/MM/yyyy")
+                        </td>
+
+
+                    </tr>
+                }
+                <tr>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        @*Total: @Model.TodayIelts()*@
+                    </td>
+                    <td></td>
+                    <td></td>
+
+
+                </tr>
+
+
+
+            </table>
+        </div>
+
+    </div>
+</div>
