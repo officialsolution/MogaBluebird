@@ -13,6 +13,7 @@
 
     }
     tblreceptionist rec = db.tblreceptionists.FirstOrDefault(x => x.rid == user);
+    IEnumerable<Notification> noti = db.Notifications.Where(x => x.Consoller == name && x.Status == true).ToList();
 }
 
 <!DOCTYPE html>
@@ -531,7 +532,34 @@
         <div class="main-content">
             <div class="page-content">
                 <div class="container-fluid">
+                    @if (noti != null)
+                    {
+                        foreach (var item in noti)
+                        {
+                            if (item.Priority == "Low")
+                            {
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    @item.Message
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+                            else if (item.Priority == "Medium")
+                            {
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    @item.Message
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    @item.Message
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            }
 
+                        }
+                    }
                     <!-- start page title -->
                     @RenderBody()
                 </div> <!-- container-fluid -->

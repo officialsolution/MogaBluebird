@@ -211,6 +211,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminReportController.cs" />
     <Compile Include="Areas\Admin\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NotificationsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PendingController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentController.cs" />
     <Compile Include="Areas\Admin\Models\AdminData.cs" />
@@ -839,6 +840,11 @@
     <Content Include="Areas\Admin\Views\Pending\GicPending.cshtml" />
     <Content Include="Areas\Admin\Views\Pending\OfferPending.cshtml" />
     <Content Include="Areas\Admin\Views\Pending\MedicalPending.cshtml" />
+    <Content Include="Areas\Admin\Views\Notifications\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Notifications\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Notifications\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Notifications\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Notifications\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Alert.js" />
     <Content Include="Scripts\bootstrap.js" />

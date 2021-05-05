@@ -65,5 +65,6 @@ namespace Consoller.Areas.Auth.Models
         public System.Data.Entity.DbSet<Consoller.Areas.Auth.Models.Section> Sections { get; set; }
         public System.Data.Entity.DbSet<Consoller.Areas.Auth.Models.ExpenseLock> ExpenseLocks { get; set; }
         public System.Data.Entity.DbSet<Consoller.Areas.Auth.Models.form> forms { get; set; }
+        public System.Data.Entity.DbSet<Consoller.Areas.Auth.Models.Notification> Notifications { get; set; }
     }
 }

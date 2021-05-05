@@ -357,3 +357,4 @@ D:\Gagan\Website\MogaBluebird\Consoller\Consoller\obj\Debug\Consoller.csproj.Cor
 D:\Gagan\Website\MogaBluebird\Consoller\Consoller\obj\Debug\Consoller.csproj.CopyComplete
 D:\Gagan\Website\MogaBluebird\Consoller\Consoller\obj\Debug\Consoller.dll
 D:\Gagan\Website\MogaBluebird\Consoller\Consoller\obj\Debug\Consoller.pdb
+D:\Gagan\Website\MogaBluebird\Consoller\Consoller\obj\Debug\Consoller.csprojAssemblyReference.cache

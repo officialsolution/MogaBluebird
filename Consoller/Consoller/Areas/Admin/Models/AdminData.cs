@@ -276,7 +276,7 @@ namespace Consoller.Areas.Admin.Models
         {
             string franchid = help.Permission();
 
-            string total = Convert.ToString(objsql.GetSingleValue("SELECT sum(amount) FROM Recipt_Details WHERE DATEPART(m, date) = DATEPART(m, DATEADD(m, -1, getdate())) AND DATEPART(yyyy, date) = DATEPART(yyyy, DATEADD(m, -1, getdate()))"));
+            string total = Convert.ToString(objsql.GetSingleValue("SELECT COALESCE(sum(amount),0) FROM Recipt_Details WHERE DATEPART(m, date) = DATEPART(m, DATEADD(m, -1, getdate())) AND DATEPART(yyyy, date) = DATEPART(yyyy, DATEADD(m, -1, getdate()))"));
             if (Convert.ToInt32(total) != 0.0)
             {
                 return total;
@@ -290,7 +290,7 @@ namespace Consoller.Areas.Admin.Models
         {
             string franchid = help.Permission();
 
-            string total = Convert.ToString(objsql.GetSingleValue("SELECT sum(amount) FROM Recipt_Details WHERE DATEPART(m, date) = DATEPART(m, DATEADD(m, 0, getdate())) AND DATEPART(yyyy, date) = DATEPART(yyyy, DATEADD(m, 0, getdate()))"));
+            string total = Convert.ToString(objsql.GetSingleValue("SELECT COALESCE(sum(amount),0) FROM Recipt_Details WHERE DATEPART(m, date) = DATEPART(m, DATEADD(m, 0, getdate())) AND DATEPART(yyyy, date) = DATEPART(yyyy, DATEADD(m, 0, getdate()))"));
             if (Convert.ToInt32(total) != 0.0)
             {
                 return total;

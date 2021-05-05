@@ -989,6 +989,12 @@ namespace Consoller.Areas.Auth.Models
         Online,
         Cheque
     }
+    public enum Priority
+    {
+        Low,
+        Medium,
+        High
+    }
     public class Agent
     {[Key]
         public int Aid { get; set; }
@@ -1164,5 +1170,17 @@ namespace Consoller.Areas.Auth.Models
         public int id { get; set; }
         public string Ielts { get; set; }
         public string Immigration { get; set; }
+    }
+    public class Notification
+    {
+        [Key]
+        public int Id { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime Date { get; set; }
+        [Required]
+        public string Message { get; set; }
+        public bool Status { get; set; }
+        public string Priority { get; set; }
+        public string Consoller { get; set; }
     }
 }
